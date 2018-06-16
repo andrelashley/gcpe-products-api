@@ -1,0 +1,23 @@
+3. You've made a huge mistake and checked in an App Secret to a public GitHub Repository. What course of action do you take? Show example(s) of the git command line commands you might use to rectify the situation and explain how they work.
+
+There are a couple of options for dealing with this scenario. We could use the git filter branch command or the BFG Repo-Cleaner. The BFG repo cleaner is a desctructive operation which changes the SHAs for existing commits and their dependencies, and these changed SHAs may affect open pull requests in your repository. To mitigate this, the GitHub documentation recommends merging or closing any open pull requests prior to running the command. Another alternative to BFG is using git filter-branch to remove files with sensitive data from the repository.
+
+The format of the filter-branch command is (this would be run after cd'ing into your local repository):
+
+git filter-branch --force --index-filter \
+'git rm --cached --ignore-unmatch PATH-TO-YOUR-FILE-WITH-SENSITIVE-DATA' \
+--prune-empty --tag-name-filter cat -- --all
+Rewrite 48dc599c80e20527ed902928085e7861e6b3cbe6 (266/266)
+Ref 'refs/heads/master' was rewritten
+
+This command does three things: 1. it forces git to process, but not check out the entire history of every branch and tag, 2. it removed the specified file as well an any empty commits generated as a result, and 3. it overwrites your existing tags
+
+After running this command, you would then add the name of the file with sensitive data to the .gitignore file to ensure that it is not accidentally committed again. Later on these changes can by pushed to your remote repository. Finally, as a clean up step to ensure that the filter-branch has had no unintended side effects, you could force all objects in your local repository to be garbage collected and deallocated using git update-ref, reflog and prune.
+
+4.  What are view components and why are they important?
+
+View components are a feature of .NET core that are similar to partial views but much more powerful. They are important because the component can have its own data rather than depending on the controller for its data. View components can also have their own business logic and provide separation of concerns since as mentioned, there is no dependency between the component and the controller. An example of where a view component would be useful is if you need to access third-party data in a component. While this could be done using partial views, the code would be less maintainable and testable than if the feature was implement with a view component.
+
+5. The JavaScript would log Saab to the console because the this keyword points to the object/function itself and its properties which are car and getCarType. In JavaScript, unless you force the this keyword to apply to a different object using apply or bind, it will point to the function being called hence why we get the cartype defined in the object and not the one defined in the global scope (outside of an object literal). The call to the test() function in the last console log will produce a reference error because there is no function in the current scope called test.
+
+6. DevOps is important because it brings teams together to create robust, reliable software at a pace that is much faster than using traditional approaches. Beyond the software and operations related aspects, it aims at bringing about radical shifts in organization culture. Specifically, devops fosters collaboration and allows businesses to arrive at a common set of objectives to deliver business value. It is a rethinking of the relationship between development and operations teams and aims to reduce the tensions that have often arisen between the two groups.
